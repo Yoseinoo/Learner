@@ -3,18 +3,35 @@ import type { Deck } from '@/models/Deck';
 import axiosInstance from '@/modules/axios';
 import { onMounted, ref, type Ref } from 'vue';
 import DeckItem from '@/components/DeckItem.vue';
+import { useRoute } from 'vue-router';
 
+const route = useRoute();
 const deckList: Ref<Deck[]> = ref([]);
 
-//TODO: Si non connecté alors trouver les data dans indexed DB sinon récupérer les data dans sql pour l'utitlisateur connecté
+//TODO: Problème ne devrait pas être dans onMounted car c'est utilisé par 2 url et ça repasse pas par unmounted 
 onMounted(() => {
-  getDecks();
+    if (route.params.id) {
+      getDecksForUser();
+    } else {
+      getDecks();
+    }
 });
 
 function getDecks() {
-  console.log("Getting decks for user : ")
+  console.log("Getting all decks");
   axiosInstance
   .get<Deck[]>("/api/decks")
+  .then(resp => {
+    deckList.value = resp.data;
+    console.log(resp);
+  })
+  .catch(err => console.error("Error getting decks : " + err))
+}
+
+function getDecksForUser() {
+  console.log("Getting decks for user : " + route.params.id);
+  axiosInstance
+  .get<Deck[]>("/api/decks/" + route.params.id)
   .then(resp => {
     deckList.value = resp.data;
     console.log(resp);
@@ -32,8 +49,9 @@ function getDecks() {
       ></DeckItem>
     </div>
 
-    <div class="buttons">
+    <div v-if="route.params.id" class="buttons">
       <RouterLink to="/deck">Nouveau</RouterLink>
+      <RouterLink to="/decks">Récupérer un deck publique</RouterLink>
     </div>
   </div>
 </template>

@@ -6,19 +6,28 @@ import { onMounted, ref, type Ref } from 'vue';
 import { useRoute } from 'vue-router';
 import axiosInstance from '@/modules/axios';
 import router from '@/router';
+import { useUsers } from '@/stores/user';
+import axios from 'node_modules/axios/index.cjs';
+
+const userStore = useUsers()
 
 const defaultDeck: Deck = {
     id: 0,
     label: '',
     description: '',
     active: false,
-    public: false
+    public: false,
+    user_id: 0
 }
 const deck: Ref<Deck> = ref(defaultDeck);
 const route = useRoute();
 const cardList: Ref<Card[]> = ref([]);
 
 onMounted(() => {
+    deck.value.user_id = userStore.authenticatedUser ? userStore.authenticatedUser.id : 0;
+    console.log(userStore.authenticatedUser)
+    console.log(deck.value)
+
     if (route.params.id) {
         getDeck();
     } else {
@@ -80,22 +89,35 @@ function saveDeck() {
 function saveCard() {
 
 }
+
+function duplicate() {
+    console.log('Duplicating public deck for user : ' + userStore.authenticatedUser?.id);
+    axiosInstance.post('/api/deck/duplicate', {deck_id: deck.value.id, user_id: userStore.authenticatedUser?.id})
+    .then(resp => {
+        console.log("duplicated");
+    })
+    .catch(err => console.error("Error duplicating public deck", err))
+}
 </script>
 
 <template>
 <div class="container">
     <div class="deck-details">
         <label for="label">Titre :</label>
-        <input type="text" name="label" v-model="deck.label"/>
+        <input type="text" name="label" v-model="deck.label" :readonly="deck.user_id != userStore.authenticatedUser?.id"/>
 
         <label for="description">Description :</label>
-        <textarea name="description" v-model="deck.description"></textarea>
+        <textarea name="description" v-model="deck.description" :readonly="deck.user_id != userStore.authenticatedUser?.id"></textarea>
 
-        <label for="active">Actif :</label>
-        <input type="checkbox" name="active" v-model="deck.active" />
+        <div v-if="deck.user_id == userStore.authenticatedUser?.id">
+            <label for="active">Actif :</label>
+            <input type="checkbox" name="active" v-model="deck.active" />
+        </div>
 
-        <label for="public">Publique :</label>
-        <input type="checkbox" name="public" v-model="deck.public" />
+        <div v-if="deck.user_id == userStore.authenticatedUser?.id">
+            <label for="public">Publique :</label>
+            <input type="checkbox" name="public" v-model="deck.public" />
+        </div>
     </div>
 
     <div class="cards-container">
@@ -103,13 +125,16 @@ function saveCard() {
         <CardItem
             v-for="card in cardList"
             :card="card"
-            :deletable="true"
+            :deletable="deck.user_id == userStore.authenticatedUser?.id"
         ></CardItem>
     </div>
 
-    <div class="buttons">
+    <div v-if="deck.user_id == userStore.authenticatedUser?.id" class="buttons">
         <button>Ajouter une carte</button>
         <button @click="saveDeck">Sauvegarder</button>
+    </div>
+    <div v-else>
+        <button @click="duplicate">Ajouter à mes decks</button>
     </div>
 </div>
 </template>

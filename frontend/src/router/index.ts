@@ -19,7 +19,7 @@ const router = createRouter({
       component: LoginView
     },
     {
-      path: '/decks',
+      path: '/decks/:id?',
       name: 'decks',
       component: DeckView
     },

@@ -8,6 +8,7 @@ use App\Models\Deck;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class DecksController extends Controller {
 
@@ -16,11 +17,14 @@ class DecksController extends Controller {
         return response()->json($deck);
     }
 
-    public function getPublicDecks(): JsonResponse {
-        //Gate::authorize('viewAny', Todo::class);
-        $user = Auth::user();
-        $decks = Deck::where('public', 1);
+    public function getDecks(): JsonResponse {
+        $decks = Deck::where('public', 1)->get();
         return response()->json($decks); 
+    }
+
+    public function getDecksForUser(string $id): JsonResponse {
+        $decks = Deck::where('user_id', $id)->get();
+        return response()->json($decks);
     }
 
     /**
@@ -52,5 +56,27 @@ class DecksController extends Controller {
             $deck_deleted
         ];
         return response()->json($resp);
+    }
+
+    public function duplicateDeck(Request $request): Response {
+        $input = $request->validate([
+            'deck_id' => ['required'],
+            'user_id' => ['required']
+        ]);
+
+        //Duplicate the deck and update the user_id
+        $deck = Deck::find($input['deck_id']);
+        $dup = $deck->replicate();
+        $dup->user_id = $input['user_id'];
+        $dup->save();
+
+        $cards = Card::where('deck_id', $input['deck_id'])->get();
+        foreach ($cards as $card) {
+            $new_card = $card->replicate();
+            $new_card->deck_id = $dup->id;
+            $new_card->save();
+        }
+
+        return response(201);
     }
 }

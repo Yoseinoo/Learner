@@ -7,8 +7,6 @@ const props = defineProps<{
     deck: Deck
 }>()
 
-const pathToDeck = "/deck/" + props.deck.id;
-
 function remove() {
     axiosInstance
     .delete("/api/deck/" + props.deck.id)

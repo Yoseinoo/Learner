@@ -10,10 +10,14 @@ const csrf = () => axiosInstance.get('/sanctum/csrf-cookie')
 export const useUsers = defineStore('users', () => {
     const authenticatedUser : Ref<User|undefined> = ref(undefined)
 
+    //Get the current user when store is created
+    getUser();
+
     async function getUser() {
         axiosInstance
         .get('/api/user')
         .then(response => {
+            console.log("Got user : ", response.data)
             authenticatedUser.value = response.data
         })
         .catch(error => {

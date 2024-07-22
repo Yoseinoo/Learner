@@ -3,5 +3,6 @@ export interface Deck {
     label: string,
     description: string,
     active: boolean,
-    public: boolean
+    public: boolean,
+    user_id: number
 }

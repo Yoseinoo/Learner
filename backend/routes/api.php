@@ -12,5 +12,7 @@ Route::get('/api/deck/{id}', [DecksController::class, 'getDeck'])->middleware('a
 Route::delete('/api/deck/{id}', [DecksController::class, 'removeDeck'])->middleware('auth:sanctum');
 Route::post('/api/deck', [DecksController::class, 'saveDeck'])->middleware('auth:sanctum');
 Route::get('/api/decks', [DecksController::class, 'getDecks'])->middleware('auth:sanctum');
+Route::get('/api/decks/{id}', [DecksController::class, 'getDecksForUser'])->middleware('auth:sanctum');
+Route::post('/api/deck/duplicate', [DecksController::class, 'duplicateDeck'])->middleware('auth:sanctum');
 Route::get('/api/cards', [CardsController::class, 'getCards'])->middleware('auth:sanctum');
 Route::get('/api/cards/{deck_id}', [CardsController::class, 'getCardsForDeck'])->middleware('auth:sanctum');

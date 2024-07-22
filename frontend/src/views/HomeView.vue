@@ -16,8 +16,8 @@ function logout() {
         <RouterLink to="/login">Se connecter</RouterLink>
       </div>
       <div v-else>
-        <p>Utilisateur : {{ userStore.authenticatedUser?.name }}</p>
-        <RouterLink to="/decks">Mes decks</RouterLink>
+        <p>Utilisateur : {{ userStore.authenticatedUser.name }}</p>
+        <RouterLink :to="'/decks/' + userStore.authenticatedUser.id">Mes decks</RouterLink>
         <button type="button" @click="logout">Déconnexion</button>
       </div>
     </nav>
