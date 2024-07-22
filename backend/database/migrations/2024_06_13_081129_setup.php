@@ -39,6 +39,13 @@ return new class extends Migration
             $table->string('label')->nullable(false);
             $table->timestamps();
         });
+
+        Schema::create('revisions', function(Blueprint $table) {
+            $table->id();
+            $table->dateTime('start');
+            $table->foreignIdFor(User::class);
+            $table->timestamps();
+        });
     }
 
     /**

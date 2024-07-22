@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import type { Card } from '@/models/Card';
+import axiosInstance from '@/modules/axios';
+import router from '@/router';
 
 const props = defineProps<{
     card: Card,
@@ -7,7 +9,13 @@ const props = defineProps<{
 }>()
 
 function remove() {
-
+    axiosInstance
+    .delete("/api/card/" + props.card.id)
+    .then(resp => {
+        //TODO: Emit event that deck item has been removed instead of reloading page
+        router.go(0);
+    })
+    .catch(err => console.error("error deleting card with id :" + props.card.id))
 }
 </script>
 

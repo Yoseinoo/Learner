@@ -68,6 +68,7 @@ class DecksController extends Controller {
         $deck = Deck::find($input['deck_id']);
         $dup = $deck->replicate();
         $dup->user_id = $input['user_id'];
+        $dup->public = false;
         $dup->save();
 
         $cards = Card::where('deck_id', $input['deck_id'])->get();

@@ -7,7 +7,6 @@ import { useRoute } from 'vue-router';
 import axiosInstance from '@/modules/axios';
 import router from '@/router';
 import { useUsers } from '@/stores/user';
-import axios from 'node_modules/axios/index.cjs';
 
 const userStore = useUsers()
 
@@ -86,8 +85,8 @@ function saveDeck() {
     .catch(err => console.error("Error saving deck : " + err))
 }
 
-function saveCard() {
-
+function addCard() {
+    router.push('/card/' + deck.value.id);
 }
 
 function duplicate() {
@@ -130,7 +129,7 @@ function duplicate() {
     </div>
 
     <div v-if="deck.user_id == userStore.authenticatedUser?.id" class="buttons">
-        <button>Ajouter une carte</button>
+        <button @click="addCard">Ajouter une carte</button>
         <button @click="saveDeck">Sauvegarder</button>
     </div>
     <div v-else>
