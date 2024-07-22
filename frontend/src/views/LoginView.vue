@@ -1,31 +1,22 @@
 
 <script setup lang="ts">
-import axiosInstance from '@/modules/axios'
+import { useUsers } from '@/stores/user';
 import { type Ref, ref } from 'vue'
-import { useRouter } from 'vue-router'
 
-const email: Ref<string> = ref('')
-const password: Ref<string> = ref('')
-const router = useRouter()
+const form = ref({
+    name: 'test',
+    email: '',
+    password: ''
+})
+
+const userStore = useUsers()
 
 function login() {
-    axiosInstance
-    .get('/sanctum/csrf-cookie')
-    .then((response) => {
-        console.log('csrf token ok, trying to login')
-        axiosInstance
-            .post('/login', { email: email.value, password: password.value })
-            .then((result) => {
-                console.log('Connexion réussie')
-                router.push('/')
-            })
-            .catch((err) => {
-                console.log('invalid credential')
-            })
-    })
-    .catch((error) => {
-        console.log('error while getting csrf token')
-    })
+    userStore.login(form)
+}
+
+function register() {
+    userStore.register(form)
 }
 </script>
 
@@ -33,15 +24,16 @@ function login() {
     <div class="login-form">
         <div>
             <label for="email">Email : </label>
-            <input type="email" name="email" id="remail" v-model="email" />
+            <input type="email" name="email" id="remail" v-model="form.email" />
         </div>
 
         <div>
             <label for="password">Password : </label>
-            <input type="password" name="password" id="password" v-model="password" />
+            <input type="password" name="password" id="password" v-model="form.password" />
         </div>
 
         <button type="button" @click="login">Se connecter</button>
+        <button type="button" @click="register">S'inscrire</button>
     </div>
 </template>
 

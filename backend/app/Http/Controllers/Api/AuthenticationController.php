@@ -24,7 +24,7 @@ class AuthenticationController extends Controller
             $token = $user->createToken("access_token");
             return response()->json(['status' => 'ok', "access_token" => $token]);
         }
- 
+
         return response()->json([
             "status" => "error",
             'message' => 'invalid credentials.',

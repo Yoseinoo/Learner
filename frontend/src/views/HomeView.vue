@@ -1,23 +1,25 @@
 <script setup lang="ts">
-import axiosInstance from '@/modules/axios';
+import { useUsers } from '@/stores/user';
 
-//TODO: remove, should be called whenever error 419 occurs or when login in
-axiosInstance
-.get('/sanctum/csrf-cookie')
-.then((response) => {
-  console.log('csrf token ok, trying to login')
-})
-.catch((error) => {
-  console.log('error while getting csrf token')
-});
+const userStore = useUsers();
+
+function logout() {
+  userStore.logout()
+}
 </script>
 
 <template>
   <main>
     <h1>Learner</h1>
     <nav>
-      <RouterLink to="/login">Se connecter</RouterLink>
-      <RouterLink to="/decks">Decks</RouterLink>
+      <div v-if="userStore.authenticatedUser == undefined">
+        <RouterLink to="/login">Se connecter</RouterLink>
+      </div>
+      <div v-else>
+        <p>Utilisateur : {{ userStore.authenticatedUser?.name }}</p>
+        <RouterLink to="/decks">Mes decks</RouterLink>
+        <button type="button" @click="logout">Déconnexion</button>
+      </div>
     </nav>
 
     <RouterLink to="/revision">Débuter la révision du jour</RouterLink>

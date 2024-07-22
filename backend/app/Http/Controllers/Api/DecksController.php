@@ -8,19 +8,18 @@ use App\Models\Deck;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
-class ApiController extends Controller {
+class DecksController extends Controller {
 
     public function getDeck(string $id): JsonResponse {
         $deck = Deck::find($id);
         return response()->json($deck);
     }
 
-    public function getDecks(): JsonResponse {
+    public function getPublicDecks(): JsonResponse {
         //Gate::authorize('viewAny', Todo::class);
         $user = Auth::user();
-        $decks = Deck::all();
+        $decks = Deck::where('public', 1);
         return response()->json($decks); 
     }
 
@@ -53,15 +52,5 @@ class ApiController extends Controller {
             $deck_deleted
         ];
         return response()->json($resp);
-    }
-
-    public function getCards(): JsonResponse {
-        $cards = Card::all();
-        return response()->json($cards);
-    }
-
-    public function getCardsForDeck(string $deck_id) {
-        $cards = Card::where('deck_id', $deck_id)->get();
-        return response()->json($cards);
     }
 }
