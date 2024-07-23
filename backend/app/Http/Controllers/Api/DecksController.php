@@ -39,8 +39,8 @@ class DecksController extends Controller {
                 'description' => $input['description'],
                 'active' => $input['active'],
                 'public' => $input['public'],
-                'user_id' => 1,
-                'category_id' => 1
+                'user_id' => $input['user_id'],
+                'category_id' => $input['category_id']
             ]
         );
         return response()->json($deck);

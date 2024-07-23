@@ -8,7 +8,7 @@ import { ref, type Ref } from 'vue'
 const csrf = () => axiosInstance.get('/sanctum/csrf-cookie')
 
 export const useUsers = defineStore('users', () => {
-    const authenticatedUser : Ref<User|undefined> = ref(undefined)
+    const authenticatedUser : Ref<User|undefined> = ref(undefined);
 
     //Get the current user when store is created
     getUser();

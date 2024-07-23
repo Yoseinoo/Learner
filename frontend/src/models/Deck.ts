@@ -4,5 +4,6 @@ export interface Deck {
     description: string,
     active: boolean,
     public: boolean,
-    user_id: number
+    user_id: number,
+    category_id: number
 }

@@ -4,7 +4,6 @@ import DeckView from '../views/DeckView.vue'
 import RevisionView from '@/views/RevisionView.vue'
 import LoginView from '@/views/LoginView.vue'
 import DeckDetailsView from '@/views/DeckDetailsView.vue'
-import CardDetailsView from '@/views/AddCardView.vue'
 import AddCardView from '@/views/AddCardView.vue'
 
 const router = createRouter({

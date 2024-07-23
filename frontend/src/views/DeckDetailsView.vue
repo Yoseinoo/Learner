@@ -7,6 +7,7 @@ import { useRoute } from 'vue-router';
 import axiosInstance from '@/modules/axios';
 import router from '@/router';
 import { useUsers } from '@/stores/user';
+import type { Category } from '@/models/Category';
 
 const userStore = useUsers()
 
@@ -16,23 +17,34 @@ const defaultDeck: Deck = {
     description: '',
     active: false,
     public: false,
-    user_id: 0
+    user_id: 0,
+    category_id: 0
 }
 const deck: Ref<Deck> = ref(defaultDeck);
 const route = useRoute();
 const cardList: Ref<Card[]> = ref([]);
+const categoryList: Ref<Category[]> = ref([]);
 
 onMounted(() => {
     deck.value.user_id = userStore.authenticatedUser ? userStore.authenticatedUser.id : 0;
-    console.log(userStore.authenticatedUser)
-    console.log(deck.value)
 
     if (route.params.id) {
         getDeck();
     } else {
         console.log("Nouveau deck");
     }
+
+    getCategories();
 });
+
+function getCategories() {
+    axiosInstance
+    .get<Category[]>("/api/categories")
+    .then(resp => {
+        categoryList.value = resp.data;
+    })
+    .catch(err => console.error("Error getting categories : ") + err)
+}
 
 /**
  * Récupère le deck en bdd en utilisant l'id trouvé dans les params d'url
@@ -107,6 +119,11 @@ function duplicate() {
 
         <label for="description">Description :</label>
         <textarea name="description" v-model="deck.description" :readonly="deck.user_id != userStore.authenticatedUser?.id"></textarea>
+
+        <label for="categories">Catégories :</label>
+        <select name="categories" v-model="deck.category_id">
+            <option v-for="category in categoryList" :value="category.id">{{category.label}}</option>
+        </select>
 
         <div v-if="deck.user_id == userStore.authenticatedUser?.id">
             <label for="active">Actif :</label>

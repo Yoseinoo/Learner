@@ -25,12 +25,15 @@ class CardsController extends Controller {
     public function saveCard(Request $request): JsonResponse {
         $input = $request->input('card');
 
-        $card = new Card();
-        $card->question = $input['question'];
-        $card->answer = $input['answer'];
-        $card->level = 1;
-        $card->deck_id = $input['deck_id'];
-        $card->save();
+        $card = Card::updateOrCreate(
+            ['id' => $input['id']],
+            [
+                'question' => $input['question'],
+                'answer' => $input['answer'],
+                'level' => $input['level'],
+                'deck_id' => $input['deck_id']
+            ]
+        );
 
         return response()->json($card);
     }
