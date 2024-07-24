@@ -42,8 +42,8 @@ return new class extends Migration
 
         Schema::create('revisions', function(Blueprint $table) {
             $table->id();
-            $table->dateTime('start');
-            $table->dateTime('last');
+            $table->dateTime('start')->nullable();
+            $table->dateTime('last')->nullable();
             $table->foreignIdFor(User::class);
             $table->timestamps();
         });

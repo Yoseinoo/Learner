@@ -2,7 +2,7 @@
 import CardItem from '@/components/CardItem.vue';
 import { useRevision } from '@/stores/revision';
 
-const revisionStore = useRevision()
+const revisionStore = useRevision();
 </script>
 
 <template>

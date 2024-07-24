@@ -18,14 +18,31 @@ export const useRevision = defineStore('revision', () => {
         getRevision();
     }
 
+    function createRevision() {
+        console.log("Creating new revision");
+        axiosInstance
+        .post<Revision>("/api/revision/" +  userStore.authenticatedUser?.id)
+        .then(resp => {
+            revision.value = resp.data;
+            console.log(resp.data);
+            getCards();
+        })
+        .catch(err => console.log("Error creating revision : ", err))
+    }
+
     function getRevision() {
         console.log("Getting revision")
         axiosInstance
         .get<Revision>("/api/revision/" + userStore.authenticatedUser?.id)
         .then(resp => {
-            revision.value = resp.data;
-            console.log(resp.data)
-            getCards()
+            if (!resp.data.id) {
+                console.log("No revision found");
+                createRevision();
+            } else {
+                revision.value = resp.data;
+                console.log(resp.data);
+                getCards();
+            }
         })
         .catch(err => console.error("Error getting revision : " + err))
     }

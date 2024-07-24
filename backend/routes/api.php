@@ -25,5 +25,6 @@ Route::delete('/api/card/{id}', [CardsController::class, 'removeCard'])->middlew
 
 Route::get('/api/revision/{user_id}', [RevisionController::class, 'getRevision'])->middleware('auth:sanctum');
 Route::get('/api/revision/cards/{user_id}', [RevisionController::class, 'getCards'])->middleware('auth:sanctum');
+Route::post('/api/revision/{user_id}', [RevisionController::class, 'createRevision'])->middleware('auth:sanctum');
 
 Route::get('/api/categories', [CategoriesController::class, 'getAll'])->middleware('auth:sanctum');

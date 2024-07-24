@@ -17,6 +17,15 @@ class RevisionController extends Controller {
         return response()->json($revision);
     }
 
+    public function createRevision(string $user_id): JsonResponse {
+        $revision = new Revision();
+        $revision->user_id = $user_id;
+        $revision->start = date("Y-m-d");
+        $revision->save();
+
+        return response()->json($revision);
+    }
+
     public function getCards(string $user_id): JsonResponse {
         $revision = Revision::where('user_id', $user_id)->first();
 
