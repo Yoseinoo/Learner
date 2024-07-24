@@ -19,7 +19,6 @@ class AuthenticationController extends Controller
         ]);
  
         if (Auth::attempt($credentials)) {
-            // $request->session()->regenerate();
             $user = User::whereEmail($credentials["email"])->first();
             $token = $user->createToken("access_token");
             return response()->json(['status' => 'ok', "access_token" => $token]);
@@ -30,5 +29,4 @@ class AuthenticationController extends Controller
             'message' => 'invalid credentials.',
         ], 401);
     }
-    //
 }

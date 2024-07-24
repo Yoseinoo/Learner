@@ -14,6 +14,9 @@ class CardsController extends Controller {
         return response()->json($cards);
     }
 
+    /**
+     * Récupère les cartes associées au deck
+     */
     public function getCardsForDeck(string $deck_id) {
         $cards = Card::where('deck_id', $deck_id)->get();
         return response()->json($cards);

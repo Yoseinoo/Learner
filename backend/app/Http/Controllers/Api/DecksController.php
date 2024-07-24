@@ -17,11 +17,17 @@ class DecksController extends Controller {
         return response()->json($deck);
     }
 
+    /**
+     * Récupère tous les decks publics 
+     */
     public function getDecks(): JsonResponse {
         $decks = Deck::where('public', 1)->get();
         return response()->json($decks); 
     }
 
+    /**
+     * Récupère les decks associés à un utilisateur
+     */
     public function getDecksForUser(string $id): JsonResponse {
         $decks = Deck::where('user_id', $id)->get();
         return response()->json($decks);
@@ -46,6 +52,9 @@ class DecksController extends Controller {
         return response()->json($deck);
     }
 
+    /**
+     * Supprimer le deck
+     */
     public function removeDeck(string $id): JsonResponse {
         //Deleting cards associated to deck first
         $cards_deleted = Card::where('deck_id', $id)->delete();
@@ -58,6 +67,9 @@ class DecksController extends Controller {
         return response()->json($resp);
     }
 
+    /**
+     * Duplique le deck vers l'utilisateur cible
+     */
     public function duplicateDeck(Request $request): Response {
         $input = $request->validate([
             'deck_id' => ['required'],
@@ -71,6 +83,7 @@ class DecksController extends Controller {
         $dup->public = false;
         $dup->save();
 
+        //Duplicate cards of the deck to duplicate
         $cards = Card::where('deck_id', $input['deck_id'])->get();
         foreach ($cards as $card) {
             $new_card = $card->replicate();

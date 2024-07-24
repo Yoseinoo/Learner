@@ -136,7 +136,7 @@ function reloadCards() {
         </div>
 
         <div v-if="deck.user_id == userStore.authenticatedUser?.id">
-            <label for="public">Publique :</label>
+            <label for="public">public :</label>
             <input type="checkbox" name="public" v-model="deck.public" />
         </div>
     </div>

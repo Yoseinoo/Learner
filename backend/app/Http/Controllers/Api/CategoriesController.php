@@ -8,6 +8,9 @@ use Illuminate\Http\JsonResponse;
 
 class CategoriesController extends Controller {
 
+    /**
+     * Récupère toutes les catégories
+     */
     public function getAll(): JsonResponse {
         $cats = Category::all();
 
