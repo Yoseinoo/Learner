@@ -57,5 +57,6 @@ return new class extends Migration
         Schema::dropIfExists('decks');
         Schema::dropIfExists('cards');
         Schema::dropIfExists('categories');
+        Schema::dropIfExists('revisions');
     }
 };

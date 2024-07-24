@@ -36,4 +36,12 @@ function remove() {
         border: solid 3px white;
         border-radius: 10px;
     }
+
+    h1 {
+        font-size: 22px;
+    }
+
+    h3 {
+        font-size: 14px;
+    }
 </style>

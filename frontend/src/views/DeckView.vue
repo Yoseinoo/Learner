@@ -60,7 +60,7 @@ function reloadDecks() {
 
 <template>
   <div class="view-container">
-    <div class="card-items">
+    <div class="deck-items">
       <DeckItem
         v-for="deck in deckList"
         @deck-deleted="reloadDecks"
@@ -90,5 +90,11 @@ function reloadDecks() {
   justify-content: flex-end;
 
   width: 100%;
+}
+
+.deck-items {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 </style>

@@ -17,12 +17,11 @@ class DeckFactory extends Factory
     public function definition(): array
     {
         return [
-            'label' => fake()->title(),
+            'label' => fake()->sentence(6),
             'description' => fake()->text(),
             'active' => fake()->boolean(),
             'public' => fake()->boolean(),
-            'category_id' => 1,
-            'user_id' => null
+            'category_id' => 1
         ];
     }
 }
