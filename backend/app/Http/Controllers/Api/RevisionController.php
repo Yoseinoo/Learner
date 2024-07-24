@@ -51,10 +51,14 @@ class RevisionController extends Controller {
         $days_past = $today->diff($start_date)->format("%a");
 
         //For each level, check if it should be reviewed
-        for ($i = 1; $i < 8; $i++) {
-            $day_to_review = 2**($i-1);
-            if ($days_past%$day_to_review == 0) {
-                $levels_to_get[] = $i;
+        if ($days_past == 0) {
+            $levels_to_get[] = 1;
+        } else {
+            for ($i = 1; $i < 8; $i++) {
+                $day_to_review = 2**($i-1);
+                if ($days_past%$day_to_review == 0) {
+                    $levels_to_get[] = $i;
+                }
             }
         }
 
