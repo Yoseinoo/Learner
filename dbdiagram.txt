@@ -2,7 +2,6 @@ Table user {
   id integer [primary key]
   email varchar
   password varchar
-  cardNumber integer
 }
 
 Table card {
@@ -28,7 +27,16 @@ Table category {
   label varchar
 }
 
+Table revision {
+  id integer [primary key]
+  start datetime
+  last datetime
+  user_id integer
+}
+
 Ref: deck.category_id > category.id
 Ref: deck.user_id > user.id
 
 Ref: card.deck_id > deck.id
+
+Ref: revision.user_id > user.id
