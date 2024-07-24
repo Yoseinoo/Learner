@@ -109,6 +109,10 @@ function duplicate() {
     })
     .catch(err => console.error("Error duplicating public deck", err))
 }
+
+function reloadCards() {
+    getCards()
+}
 </script>
 
 <template>
@@ -128,6 +132,7 @@ function duplicate() {
         <div v-if="deck.user_id == userStore.authenticatedUser?.id">
             <label for="active">Actif :</label>
             <input type="checkbox" name="active" v-model="deck.active" />
+            <p>Activer un deck permet de l'ajouter à la révision</p>
         </div>
 
         <div v-if="deck.user_id == userStore.authenticatedUser?.id">
@@ -140,6 +145,7 @@ function duplicate() {
         <p v-if="cardList.length < 1">Aucune carte dans ce deck</p>
         <CardItem
             v-for="card in cardList"
+            @card-deleted="reloadCards"
             :card="card"
             :deletable="deck.user_id == userStore.authenticatedUser?.id"
         ></CardItem>

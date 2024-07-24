@@ -2,17 +2,20 @@
 import type { Deck } from '@/models/Deck'
 import axiosInstance from '@/modules/axios';
 import router from '@/router';
+import { useUsers } from '@/stores/user';
 
 const props = defineProps<{
     deck: Deck
 }>()
 
+const userStore = useUsers();
+const emit = defineEmits(['deckDeleted']);
+
 function remove() {
     axiosInstance
     .delete("/api/deck/" + props.deck.id)
     .then(resp => {
-        //TODO: Emit event that deck item has been removed instead of reloading page
-        router.go(0);
+        emit("deckDeleted");
     })
     .catch(err => console.error("error deleting deck with id :" + props.deck.id))
 }
@@ -28,6 +31,6 @@ function toDeck() {
         <p>{{ deck.description }}</p>
         <h3>{{ deck.active ? 'activé' : 'desactivé' }}</h3>
         <button @click="toDeck">Voir</button>
-        <button @click="remove">Supprimer</button>
+        <button v-if="deck.user_id == userStore.authenticatedUser?.id" @click="remove">Supprimer</button>
     </div>
 </template>

@@ -8,12 +8,13 @@ const props = defineProps<{
     deletable: boolean
 }>()
 
+const emit = defineEmits(['cardDeleted']);
+
 function remove() {
     axiosInstance
     .delete("/api/card/" + props.card.id)
     .then(resp => {
-        //TODO: Emit event that deck item has been removed instead of reloading page
-        router.go(0);
+        emit("cardDeleted");
     })
     .catch(err => console.error("error deleting card with id :" + props.card.id))
 }

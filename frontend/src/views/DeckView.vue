@@ -1,14 +1,13 @@
 <script setup lang="ts">
 import type { Deck } from '@/models/Deck';
 import axiosInstance from '@/modules/axios';
-import { onMounted, ref, type Ref } from 'vue';
+import { onMounted, ref, watch, type Ref } from 'vue';
 import DeckItem from '@/components/DeckItem.vue';
 import { useRoute } from 'vue-router';
 
 const route = useRoute();
 const deckList: Ref<Deck[]> = ref([]);
 
-//TODO: Problème ne devrait pas être dans onMounted car c'est utilisé par 2 url et ça repasse pas par unmounted 
 onMounted(() => {
     if (route.params.id) {
       getDecksForUser();
@@ -16,6 +15,17 @@ onMounted(() => {
       getDecks();
     }
 });
+
+watch(
+  () => route.params.id,
+  (newId, oldId) => {
+    if (newId) {
+      getDecksForUser();
+    } else {
+      getDecks();
+    }
+  }
+)
 
 function getDecks() {
   console.log("Getting all decks");
@@ -38,6 +48,14 @@ function getDecksForUser() {
   })
   .catch(err => console.error("Error getting decks : " + err))
 }
+
+function reloadDecks() {
+  if (route.params.id) {
+    getDecksForUser();
+  } else {
+    getDecks();
+  }
+}
 </script>
 
 <template>
@@ -45,6 +63,7 @@ function getDecksForUser() {
     <div class="card-items">
       <DeckItem
         v-for="deck in deckList"
+        @deck-deleted="reloadDecks"
         :deck="deck"
       ></DeckItem>
     </div>
