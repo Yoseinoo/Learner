@@ -70,7 +70,7 @@ function reloadDecks() {
 
     <div v-if="route.params.id" class="buttons">
       <RouterLink to="/deck">Nouveau</RouterLink>
-      <RouterLink to="/decks">Récupérer un deck publique</RouterLink>
+      <RouterLink to="/decks">Récupérer un deck public</RouterLink>
     </div>
   </div>
 </template>

@@ -9,13 +9,13 @@ const props = defineProps<{
 }>()
 
 const userStore = useUsers();
-const emit = defineEmits(['deckDeleted']);
+const emit = defineEmits(['deck-deleted']);
 
 function remove() {
     axiosInstance
     .delete("/api/deck/" + props.deck.id)
     .then(resp => {
-        emit("deckDeleted");
+        emit("deck-deleted");
     })
     .catch(err => console.error("error deleting deck with id :" + props.deck.id))
 }

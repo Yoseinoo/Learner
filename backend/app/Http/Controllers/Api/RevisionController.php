@@ -41,7 +41,6 @@ class RevisionController extends Controller {
         $cards_by_level = [];
         $selected_cards = [];
 
-
         //Get the levels to review for this day using the start date of the revision
         $levels_to_get = [];
 

@@ -15,22 +15,20 @@ function logout() {
       <div v-if="userStore.authenticatedUser == undefined">
         <RouterLink to="/login">Se connecter</RouterLink>
       </div>
-      <div v-else>
+      <div v-else class="menu">
         <p>Utilisateur : {{ userStore.authenticatedUser.name }}</p>
         <RouterLink :to="'/decks/' + userStore.authenticatedUser.id">Mes decks</RouterLink>
+        <RouterLink to="/revision">Débuter la révision du jour</RouterLink>
         <button type="button" @click="logout">Déconnexion</button>
       </div>
     </nav>
-
-    <RouterLink to="/revision">Débuter la révision du jour</RouterLink>
-    
   </main>
 </template>
 
 <style>
-  .card-items {
+  .menu {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     gap: 10px;
   }
 </style>

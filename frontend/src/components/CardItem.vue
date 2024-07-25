@@ -1,20 +1,19 @@
 <script setup lang="ts">
 import type { Card } from '@/models/Card';
 import axiosInstance from '@/modules/axios';
-import router from '@/router';
 
 const props = defineProps<{
     card: Card,
     deletable: boolean
 }>()
 
-const emit = defineEmits(['cardDeleted']);
+const emit = defineEmits(['card-deleted']);
 
 function remove() {
     axiosInstance
     .delete("/api/card/" + props.card.id)
     .then(resp => {
-        emit("cardDeleted");
+        emit("card-deleted");
     })
     .catch(err => console.error("error deleting card with id :" + props.card.id))
 }
