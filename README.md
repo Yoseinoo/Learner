@@ -15,3 +15,7 @@
   - `npm install`
   - `npm run dev`
 - Ouvrir un navigateur et se rendre à l'url suivante : `http://localhost:8080`
+
+L'utilisateur par défaut :
+email : test@test.fr
+mot de passe : test
