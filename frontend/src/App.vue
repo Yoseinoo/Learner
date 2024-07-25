@@ -3,6 +3,7 @@ import { RouterView } from 'vue-router'
 </script>
 
 <template>
+  <link rel="manifest" href="/manifest.json" />
   <RouterView />
 </template>
 
